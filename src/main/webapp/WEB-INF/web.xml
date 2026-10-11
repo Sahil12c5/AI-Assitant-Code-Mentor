@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Adaptive AI Coding Mentor</display-name>
+
+    <context-param>
+        <param-name>appName</param-name>
+        <param-value>Adaptive AI Coding Mentor</param-value>
+    </context-param>
+
+    <!-- Filters -->
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>com.aimentor.filter.CorsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.aimentor.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>com.aimentor.filter.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Servlets: UI Controllers -->
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>com.aimentor.controller.HomeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.aimentor.controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.aimentor.controller.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.aimentor.controller.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.aimentor.controller.DashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>com.aimentor.controller.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/admin/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlets: JSON APIs -->
+    <servlet>
+        <servlet-name>MeApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.MeApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MeApiServlet</servlet-name>
+        <url-pattern>/api/me</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.LoginApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginApiServlet</servlet-name>
+        <url-pattern>/api/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.RegisterApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterApiServlet</servlet-name>
+        <url-pattern>/api/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnalyzeApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.AnalyzeApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnalyzeApiServlet</servlet-name>
+        <url-pattern>/api/analyze</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HintApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.HintApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HintApiServlet</servlet-name>
+        <url-pattern>/api/hint</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SolutionApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.SolutionApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SolutionApiServlet</servlet-name>
+        <url-pattern>/api/solution</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RunApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.RunApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RunApiServlet</servlet-name>
+        <url-pattern>/api/run</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProfileApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.ProfileApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProfileApiServlet</servlet-name>
+        <url-pattern>/api/profile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MistakesApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.MistakesApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MistakesApiServlet</servlet-name>
+        <url-pattern>/api/mistakes</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProblemsApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.ProblemsApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProblemsApiServlet</servlet-name>
+        <url-pattern>/api/problems</url-pattern>
+        <url-pattern>/api/problems/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SubmissionsApiServlet</servlet-name>
+        <servlet-class>com.aimentor.api.SubmissionsApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SubmissionsApiServlet</servlet-name>
+        <url-pattern>/api/submissions</url-pattern>
+    </servlet-mapping>
+
+    <!-- Welcome File -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Error Pages -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/500.jsp</location>
+    </error-page>
+
+    <!-- Session Configuration (30 minute timeout) -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+        </cookie-config>
+    </session-config>
+
+</web-app>
