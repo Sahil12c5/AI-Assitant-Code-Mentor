@@ -196,6 +196,7 @@
     <servlet-mapping>
         <servlet-name>SubmissionsApiServlet</servlet-name>
         <url-pattern>/api/submissions</url-pattern>
+        <url-pattern>/api/submit</url-pattern>
     </servlet-mapping>
 
     <!-- Welcome File -->

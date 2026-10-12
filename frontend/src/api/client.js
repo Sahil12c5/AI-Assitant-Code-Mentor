@@ -61,6 +61,13 @@ export const api = {
       body: JSON.stringify({ code, language, input }),
     }),
 
+  // Official Graded Code Submission
+  submitCode: (code, language = 'java', problemId = null) =>
+    request('/submit', {
+      method: 'POST',
+      body: JSON.stringify({ code, language, problemId }),
+    }),
+
   // AI Analysis (Level 1)
   analyzeCode: (code, language, problemId) =>
     request('/analyze', {

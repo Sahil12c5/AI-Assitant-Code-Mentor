@@ -9,7 +9,9 @@ import {
   ChevronDown, 
   ChevronUp, 
   Trash2, 
-  FileCode2 
+  FileCode2,
+  CheckCircle2,
+  RefreshCw
 } from 'lucide-react';
 
 export default function CodeEditor({
@@ -18,9 +20,11 @@ export default function CodeEditor({
   language,
   onLanguageChange,
   onRun,
+  onSubmit,
   onAnalyze,
   onReset,
   isRunning,
+  isSubmitting,
   isAnalyzing,
   currentProblem
 }) {
@@ -168,23 +172,51 @@ export default function CodeEditor({
           </button>
         </div>
 
-        <div className="editor-toolbar-right">
+        <div className="editor-toolbar-right" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button
             className="btn btn-secondary btn-sm"
             onClick={onRun}
-            disabled={isRunning || isAnalyzing}
+            disabled={isRunning || isSubmitting || isAnalyzing}
+            title="Execute code in isolated sandbox without graded submission"
           >
             <Play size={14} style={{ color: '#10b981' }} />
             <span>{isRunning ? 'Running...' : 'Run Code'}</span>
           </button>
 
           <button
+            id="submit-code-btn"
+            className="btn btn-sm"
+            onClick={onSubmit}
+            disabled={isRunning || isSubmitting || isAnalyzing}
+            style={{
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              border: '1px solid rgba(16, 185, 129, 0.4)',
+              color: '#ffffff',
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              boxShadow: '0 2px 8px rgba(16, 185, 129, 0.25)',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer',
+            }}
+            title="Submit code for official grading & update dashboard Solved stats"
+          >
+            {isSubmitting ? (
+              <RefreshCw size={13} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
+            ) : (
+              <CheckCircle2 size={13} />
+            )}
+            <span>{isSubmitting ? 'Submitting...' : 'Submit Code'}</span>
+          </button>
+
+          <button
             className="btn btn-primary btn-sm"
             onClick={onAnalyze}
-            disabled={isRunning || isAnalyzing}
+            disabled={isRunning || isSubmitting || isAnalyzing}
+            title="Get Socratic pedagogical debugging guidance"
           >
             <Sparkles size={14} />
-            <span>{isAnalyzing ? 'Analyzing...' : 'Analyze with AI Mentor'}</span>
+            <span>{isAnalyzing ? 'Analyzing...' : 'AI Mentor'}</span>
           </button>
         </div>
       </div>
