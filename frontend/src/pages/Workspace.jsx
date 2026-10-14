@@ -68,7 +68,7 @@ export default function Workspace({ currentProblem, onSelectNextProblem }) {
   const handleSubmitCode = async () => {
     setIsSubmitting(true);
     try {
-      const res = await api.submitCode(code, language, currentProblem?.id);
+      const res = await api.submitCode(code, language, currentProblem?.id, stdin);
 
       // 1. Update output console pane with execution & verdict
       setRunResult({

@@ -62,10 +62,10 @@ export const api = {
     }),
 
   // Official Graded Code Submission
-  submitCode: (code, language = 'java', problemId = null) =>
+  submitCode: (code, language = 'java', problemId = null, input = '') =>
     request('/submit', {
       method: 'POST',
-      body: JSON.stringify({ code, language, problemId }),
+      body: JSON.stringify({ code, language, problemId, input }),
     }),
 
   // AI Analysis (Level 1)

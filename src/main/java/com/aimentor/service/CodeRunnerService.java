@@ -141,10 +141,13 @@ public class CodeRunnerService {
 
             Process runProcess = runPb.start();
 
-            // Pipe stdin if provided
-            if (stdinInput != null && !stdinInput.isEmpty()) {
-                try (OutputStream os = runProcess.getOutputStream()) {
+            // Pipe stdin if provided and ALWAYS close stream to signal EOF
+            try (OutputStream os = runProcess.getOutputStream()) {
+                if (stdinInput != null && !stdinInput.isEmpty()) {
                     os.write(stdinInput.getBytes(StandardCharsets.UTF_8));
+                    if (!stdinInput.endsWith("\n")) {
+                        os.write("\n".getBytes(StandardCharsets.UTF_8));
+                    }
                     os.flush();
                 }
             }
@@ -154,12 +157,20 @@ public class CodeRunnerService {
 
             if (!runCompleted) {
                 runProcess.destroyForcibly();
-                return ExecutionResult.timeout(timeoutSeconds);
+                String tip = "";
+                if (code.contains("System.in") || code.contains("Scanner")) {
+                    tip = "\n\n💡 [Timeout Tip] Your code uses Scanner / System.in. If it was waiting for input, enter your values in the 'Custom Input (stdin)' tab before running.";
+                }
+                return new ExecutionResult(ExecutionResult.Status.TIMEOUT, "", "Execution timed out after " + timeoutSeconds + " seconds." + tip, timeoutSeconds * 1000, -1);
             }
 
             String stdout = readLimitedStream(runProcess.getInputStream());
             String stderr = readLimitedStream(runProcess.getErrorStream());
             int exitCode = runProcess.exitValue();
+
+            if (exitCode != 0 && (stderr.contains("NoSuchElementException") || stderr.contains("java.util.NoSuchElementException"))) {
+                stderr += "\n\n💡 [Input Required] Your program tried to read input using Scanner, but no input was provided in the 'Custom Input (stdin)' tab.\n→ Click the 'Custom Input (stdin)' tab in the console below to enter your values.";
+            }
 
             ExecutionResult.Status status = (exitCode == 0)
                     ? ExecutionResult.Status.SUCCESS
@@ -193,9 +204,13 @@ public class CodeRunnerService {
 
             Process process = pb.start();
 
-            if (stdinInput != null && !stdinInput.isEmpty()) {
-                try (OutputStream os = process.getOutputStream()) {
+            // Pipe stdin if provided and ALWAYS close stream to signal EOF
+            try (OutputStream os = process.getOutputStream()) {
+                if (stdinInput != null && !stdinInput.isEmpty()) {
                     os.write(stdinInput.getBytes(StandardCharsets.UTF_8));
+                    if (!stdinInput.endsWith("\n")) {
+                        os.write("\n".getBytes(StandardCharsets.UTF_8));
+                    }
                     os.flush();
                 }
             }
@@ -205,12 +220,20 @@ public class CodeRunnerService {
 
             if (!completed) {
                 process.destroyForcibly();
-                return ExecutionResult.timeout(timeoutSeconds);
+                String tip = "";
+                if (code.contains("input(") || code.contains("sys.stdin")) {
+                    tip = "\n\n💡 [Timeout Tip] Your code uses input() / sys.stdin. If it was waiting for input, enter your values in the 'Custom Input (stdin)' tab before running.";
+                }
+                return new ExecutionResult(ExecutionResult.Status.TIMEOUT, "", "Execution timed out after " + timeoutSeconds + " seconds." + tip, timeoutSeconds * 1000, -1);
             }
 
             String stdout = readLimitedStream(process.getInputStream());
             String stderr = readLimitedStream(process.getErrorStream());
             int exitCode = process.exitValue();
+
+            if (exitCode != 0 && stderr.contains("EOFError")) {
+                stderr += "\n\n💡 [Input Required] Your program tried to read input using input(), but no input was provided in the 'Custom Input (stdin)' tab.\n→ Click the 'Custom Input (stdin)' tab in the console below to enter your values.";
+            }
 
             ExecutionResult.Status status = (exitCode == 0)
                     ? ExecutionResult.Status.SUCCESS

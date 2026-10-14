@@ -129,8 +129,10 @@ public class SubmissionsApiServlet extends HttpServlet {
                 return;
             }
 
+            String stdin = (String) body.getOrDefault("input", "");
+
             // 1. Run in isolated process sandbox for execution metrics
-            ExecutionResult runResult = runnerService.execute(code, language, "");
+            ExecutionResult runResult = runnerService.execute(code, language, stdin);
 
             // 2. Perform official graded analysis and record submission
             AnalysisService.AnalysisResult result = analysisService.analyzeCode(userId, problemId, code, language);
